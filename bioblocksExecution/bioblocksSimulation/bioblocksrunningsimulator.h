@@ -1,5 +1,5 @@
-#ifndef PROTOCOLRUNNINGSIMULATOR_H
-#define PROTOCOLRUNNINGSIMULATOR_H
+#ifndef BIOBLOCKSRUNNINGSIMULATOR_H
+#define BIOBLOCKSRUNNINGSIMULATOR_H
 
 #include <algorithm>
 #include <cstdarg>
@@ -20,13 +20,15 @@
 #include <utils/memento.h>
 #include <utils/machineflowstringadapter.h>
 
-class ProtocolRunningSimulator : public ProtocolSimulatorInterface
+#include "bioblocksExecution/bioblocksexecution_global.h"
+
+class BIOBLOCKSRUNNINGSIMULATOR_EXPORT BioBlocksRunningSimulator : public ProtocolSimulatorInterface
 {
 public:
-    ProtocolRunningSimulator(std::shared_ptr<ProtocolGraph> protocol,
+    BioBlocksRunningSimulator(std::shared_ptr<ProtocolGraph> protocol,
                              std::shared_ptr<LogicBlocksManager> logicBlocks);
 
-    virtual ~ProtocolRunningSimulator();
+    virtual ~BioBlocksRunningSimulator();
 
     virtual void simulateProtocol(std::shared_ptr<ActuatorsSimulationInterface> executor,int nargs, ...) throw (std::runtime_error);
 
@@ -63,7 +65,7 @@ protected:
     void clearHasBeenWritten(const std::vector<std::shared_ptr<VariableEntry>> & varEntry);
 };
 
-class ProtocolRunningSimulator::IfState {
+class BioBlocksRunningSimulator::IfState {
 public:
     IfState(){}
     ~IfState(){}
@@ -73,4 +75,4 @@ public:
     std::shared_ptr<Memento<MachineFlowStringAdapter>> machineFlowState;
 };
 
-#endif // PROTOCOLRUNNINGSIMULATOR_H
+#endif // BIOBLOCKSRUNNINGSIMULATOR_H

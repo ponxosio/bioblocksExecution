@@ -1,6 +1,6 @@
-#include "protocolrunningsimulator.h"
+#include "bioblocksrunningsimulator.h"
 
-ProtocolRunningSimulator::ProtocolRunningSimulator(
+BioBlocksRunningSimulator::BioBlocksRunningSimulator(
         std::shared_ptr<ProtocolGraph> protocol,
         std::shared_ptr<LogicBlocksManager> logicBlocks) :
     ProtocolSimulatorInterface(protocol)
@@ -8,11 +8,11 @@ ProtocolRunningSimulator::ProtocolRunningSimulator(
     this->logicBlocks = logicBlocks;
 }
 
-ProtocolRunningSimulator::~ProtocolRunningSimulator() {
+BioBlocksRunningSimulator::~BioBlocksRunningSimulator() {
 
 }
 
-void ProtocolRunningSimulator::simulateProtocol(std::shared_ptr<ActuatorsSimulationInterface> executor,int nargs, ...) throw(std::runtime_error) {
+void BioBlocksRunningSimulator::simulateProtocol(std::shared_ptr<ActuatorsSimulationInterface> executor,int nargs, ...) throw(std::runtime_error) {
     if (nargs == 1) {
         va_list args;
         va_start(args, nargs);
@@ -69,7 +69,7 @@ void ProtocolRunningSimulator::simulateProtocol(std::shared_ptr<ActuatorsSimulat
     }
 }
 
-void ProtocolRunningSimulator::resetTemporalValues() {
+void BioBlocksRunningSimulator::resetTemporalValues() {
     whilesExecuted.clear();
 
     ifBranchesExecuted.clear();
@@ -77,7 +77,7 @@ void ProtocolRunningSimulator::resetTemporalValues() {
     ifMaxDurationStateMap.clear();
 }
 
-void ProtocolRunningSimulator::simulateIf(int nodeId, std::vector<int> & nodes2process) {
+void BioBlocksRunningSimulator::simulateIf(int nodeId, std::vector<int> & nodes2process) {
     auto finded = ifBranchesExecuted.find(nodeId);
     if (finded == ifBranchesExecuted.end()) {
         startNewIfSimulation(nodeId);
@@ -112,7 +112,7 @@ void ProtocolRunningSimulator::simulateIf(int nodeId, std::vector<int> & nodes2p
     nodes2process.insert(nodes2process.end(), endBlocks.begin(), endBlocks.end());
 }
 
-void ProtocolRunningSimulator::startNewIfSimulation(int nodeId) {
+void BioBlocksRunningSimulator::startNewIfSimulation(int nodeId) {
     //save if init state
     IfState iniState;
 
@@ -143,7 +143,7 @@ void ProtocolRunningSimulator::startNewIfSimulation(int nodeId) {
     setToActualTime(triggerBranches[0]);
 }
 
-void ProtocolRunningSimulator::finishIfSimulation(int nodeId) {
+void BioBlocksRunningSimulator::finishIfSimulation(int nodeId) {
     //set longest execution end var table state
     const IfState & maxDurationState = ifMaxDurationStateMap[nodeId];
     protocol->restoreVariableTableState(*maxDurationState.varTableState);
@@ -165,7 +165,7 @@ void ProtocolRunningSimulator::finishIfSimulation(int nodeId) {
     ifMaxDurationStateMap.erase(nodeId);
 }
 
-void ProtocolRunningSimulator::updateIfDuration(int nodeId) {
+void BioBlocksRunningSimulator::updateIfDuration(int nodeId) {
     double actualTime = protocol->getTimeVariable()->getValue();
     double initTime = ifInitStateMap[nodeId].time;
     double duration = actualTime - initTime;
@@ -198,7 +198,7 @@ void ProtocolRunningSimulator::updateIfDuration(int nodeId) {
     }
 }
 
-void ProtocolRunningSimulator::simulateWhile(int nodeId, std::vector<int> & nodes2process) {
+void BioBlocksRunningSimulator::simulateWhile(int nodeId, std::vector<int> & nodes2process) {
     auto finded = whilesExecuted.find(nodeId);
     if (finded == whilesExecuted.end()) {
         startNewWhileSimulation(nodeId);
@@ -214,7 +214,7 @@ void ProtocolRunningSimulator::simulateWhile(int nodeId, std::vector<int> & node
     nodes2process.insert(nodes2process.end(), endBlocks.begin(), endBlocks.end());
 }
 
-void ProtocolRunningSimulator::startNewWhileSimulation(int nodeId) {
+void BioBlocksRunningSimulator::startNewWhileSimulation(int nodeId) {
     //block end variables
     whilesExecuted.insert(nodeId);
     blockVariables(logicBlocks->getWhilesEndVars(nodeId));
@@ -228,37 +228,37 @@ void ProtocolRunningSimulator::startNewWhileSimulation(int nodeId) {
     setToActualTime(trigger);
 }
 
-void ProtocolRunningSimulator::finishWhileSimulation(int nodeId) {
+void BioBlocksRunningSimulator::finishWhileSimulation(int nodeId) {
     const std::vector<std::shared_ptr<VariableEntry>> & endVariables = logicBlocks->getWhilesEndVars(nodeId);
     unBlockVariables(endVariables);
     setToActualTime(endVariables);
 }
 
-void ProtocolRunningSimulator::setToActualTime(std::shared_ptr<VariableEntry> varEntry) {
+void BioBlocksRunningSimulator::setToActualTime(std::shared_ptr<VariableEntry> varEntry) {
     std::shared_ptr<VariableEntry> timeVar = protocol->getTimeVariable();
     varEntry->setValue(timeVar->getValue());
 }
 
-void ProtocolRunningSimulator::setToActualTime(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
+void BioBlocksRunningSimulator::setToActualTime(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
     std::shared_ptr<VariableEntry> timeVar = protocol->getTimeVariable();
     for(std::shared_ptr<VariableEntry> var: varEntry) {
         var->setValue(timeVar->getValue());
     }
 }
 
-void ProtocolRunningSimulator::blockVariables(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
+void BioBlocksRunningSimulator::blockVariables(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
     for(std::shared_ptr<VariableEntry> var: varEntry) {
         var->blockVariable();
     }
 }
 
-void ProtocolRunningSimulator::unBlockVariables(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
+void BioBlocksRunningSimulator::unBlockVariables(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
     for(std::shared_ptr<VariableEntry> var: varEntry) {
         var->unblockVariable();
     }
 }
 
-bool ProtocolRunningSimulator::hasBeenWritten(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
+bool BioBlocksRunningSimulator::hasBeenWritten(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
     bool hasBeenWritten = false;
     for(auto it = varEntry.begin(); !hasBeenWritten && it != varEntry.end(); ++it) {
         hasBeenWritten = (*it)->hasBeenWritten();
@@ -266,7 +266,7 @@ bool ProtocolRunningSimulator::hasBeenWritten(const std::vector<std::shared_ptr<
     return hasBeenWritten;
 }
 
-void ProtocolRunningSimulator::clearHasBeenWritten(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
+void BioBlocksRunningSimulator::clearHasBeenWritten(const std::vector<std::shared_ptr<VariableEntry>> & varEntry) {
     for(std::shared_ptr<VariableEntry> var: varEntry) {
         var->clearHasBeenWritten();
     }
