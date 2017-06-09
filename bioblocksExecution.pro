@@ -19,11 +19,18 @@ unix {
 HEADERS += \
     bioblocksExecution/bioblocksexecution.h \
     bioblocksExecution/bioblocksexecution_global.h \
-    bioblocksExecution/bioblocksSimulation/bioblocksrunningsimulator.h
+    bioblocksExecution/bioblocksSimulation/bioblocksrunningsimulator.h \
+    bioblocksExecution/machineLoader/machineloader.h \
+    bioblocksExecution/protocolexecution/generalmodelexecutor.h \
+    bioblocksExecution/usercommunications/usercommunicationinterface.h \
+    bioblocksExecution/protocolexecution/bioblocksprotocolexecutor.h
 
 SOURCES += \
     bioblocksExecution/bioblocksexecution.cpp \
-    bioblocksExecution/bioblocksSimulation/bioblocksrunningsimulator.cpp
+    bioblocksExecution/bioblocksSimulation/bioblocksrunningsimulator.cpp \
+    bioblocksExecution/machineLoader/machineloader.cpp \
+    bioblocksExecution/protocolexecution/generalmodelexecutor.cpp \
+    bioblocksExecution/protocolexecution/bioblocksprotocolexecutor.cpp
 
 debug {
     QMAKE_POST_LINK=X:\bioblocksExecution\bioblocksExecution\setDLL.bat $$shell_path($$OUT_PWD/debug) debug
