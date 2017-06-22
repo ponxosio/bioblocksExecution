@@ -9,7 +9,9 @@
 #include <bioblocksTranslation/bioblockstranslator.h>
 #include <bioblocksTranslation/logicblocksmanager.h>
 
-#include "bioblocksExecution/machineLoader/machineloader.h"
+#include <blocklyFluidicMachineTranslator/blocklyfluidicmachinetranslator.h>
+
+#include "bioblocksExecution/bioblocksSimulation/bioblocksrunningsimulator.h"
 
 #include "bioblocksExecution/protocolexecution/bioblocksprotocolexecutor.h"
 #include "bioblocksExecution/protocolexecution/generalmodelexecutor.h"

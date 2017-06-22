@@ -22,16 +22,24 @@ void BioblocksExecution::executeNewProtocol(
     std::shared_ptr<LogicBlocksManager> logicBlocks = std::make_shared<LogicBlocksManager>();
     std::shared_ptr<ProtocolGraph> protocol = translator.translateFile(logicBlocks);
 
-    MachineLoader machineLoader;
-    std::shared_ptr<ModelInterface> model = machineLoader.loadModel(machineJSONFile);
-    model->updatePluginFactory(pluginFactory);
+    BlocklyFluidicMachineTranslator machineLoader(machineJSONFile, pluginFactory);
+    BlocklyFluidicMachineTranslator::ModelMappingTuple modelTuple = machineLoader.translateFile();
 
-    std::shared_ptr<MappingInterface> mapping = model->findProtocolRelation(protocol);
+    std::shared_ptr<ModelInterface> model = std::get<0>(modelTuple);
+    std::shared_ptr<MappingInterface> mapping = std::get<1>(modelTuple);
 
-    std::shared_ptr<GeneralModelExecutor> actuatorsExecutor = std::make_shared<GeneralModelExecutor>(model, mapping, userComm);
+    std::shared_ptr<BioBlocksRunningSimulator> simulator = std::make_shared<BioBlocksRunningSimulator>(protocol, logicBlocks);
 
-    int mainLoopId = logicBlocks->getMainLoopId();
-    BioBlocksProtocolExecutor protocolExecutor(protocol, mainLoopId, actuatorsExecutor->getTimer());
+    std::string erroMsg;
+    if (mapping->findRelation(simulator, erroMsg)) {
 
-    protocolExecutor.executeProtocol(actuatorsExecutor, 0);
+        std::shared_ptr<GeneralModelExecutor> actuatorsExecutor = std::make_shared<GeneralModelExecutor>(model, mapping, userComm);
+
+        int mainLoopId = logicBlocks->getMainLoopId();
+        BioBlocksProtocolExecutor protocolExecutor(protocol, mainLoopId, actuatorsExecutor->getTimer());
+
+        protocolExecutor.executeProtocol(actuatorsExecutor, 0);
+    } else {
+        userComm->sendUserMessage(erroMsg);
+    }
 }

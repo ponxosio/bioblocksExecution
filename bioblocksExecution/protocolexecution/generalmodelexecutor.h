@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QTime>
 
+#include <sstream>
+
 #include <commonmodel/mappinginterface/mappinginterface.h>
 
 #include <commonmodel/modelinterface/modelinterface.h>
@@ -94,6 +96,8 @@ protected:
     std::shared_ptr<ModelInterface> model;
     std::shared_ptr<MappingInterface> mapping;
     std::shared_ptr<UserCommunicationInterface> userCom;
+
+    std::string addTimeStamp(const std::string & str);
 };
 
 #endif // GENERALMODELEXECUTOR_H
