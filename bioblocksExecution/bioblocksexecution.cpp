@@ -6,10 +6,15 @@ BioblocksExecution::BioblocksExecution(
 {
     this->pluginFactory = pluginFactory;
     this->userComm = userComm;
+    this->running = false;
+    this->model = NULL;
+    this->protocolExecutor = NULL;
 }
 
 BioblocksExecution::~BioblocksExecution() {
-
+    if (protocolExecutor != NULL) {
+        delete protocolExecutor;
+    }
 }
 
 void BioblocksExecution::executeNewProtocol(
@@ -25,7 +30,7 @@ void BioblocksExecution::executeNewProtocol(
     BlocklyFluidicMachineTranslator machineLoader(machineJSONFile, pluginFactory);
     BlocklyFluidicMachineTranslator::ModelMappingTuple modelTuple = machineLoader.translateFile();
 
-    std::shared_ptr<ModelInterface> model = std::get<0>(modelTuple);
+    model = std::get<0>(modelTuple);
     std::shared_ptr<MappingInterface> mapping = std::get<1>(modelTuple);
 
     std::shared_ptr<BioBlocksRunningSimulator> simulator = std::make_shared<BioBlocksRunningSimulator>(protocol, logicBlocks);
@@ -36,10 +41,19 @@ void BioblocksExecution::executeNewProtocol(
         std::shared_ptr<GeneralModelExecutor> actuatorsExecutor = std::make_shared<GeneralModelExecutor>(model, mapping, userComm);
 
         int mainLoopId = logicBlocks->getMainLoopId();
-        BioBlocksProtocolExecutor protocolExecutor(protocol, mainLoopId, actuatorsExecutor->getTimer());
+        protocolExecutor = new BioBlocksProtocolExecutor(protocol, mainLoopId, actuatorsExecutor->getTimer());
 
-        protocolExecutor.executeProtocol(actuatorsExecutor, 0);
+        running = true;
+        protocolExecutor->executeProtocol(actuatorsExecutor, 0);
+        running = false;
     } else {
         userComm->sendUserMessage(erroMsg);
+    }
+}
+
+void BioblocksExecution::stopExecution() {
+    if (running) {
+        //protocolExecutor->finishExecution();
+        model->stopAllOperations();
     }
 }

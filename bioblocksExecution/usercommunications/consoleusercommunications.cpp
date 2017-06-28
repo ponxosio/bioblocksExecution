@@ -11,7 +11,7 @@ ConsoleUserCommunications::~ConsoleUserCommunications()
 }
 
 void ConsoleUserCommunications::sendUserMessage(const std::string & message) {
-    std::cout << message;
+    std::cout << message << std::endl;
 }
 
 std::string ConsoleUserCommunications::getUserResponse() {

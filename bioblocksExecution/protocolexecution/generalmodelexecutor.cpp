@@ -170,8 +170,8 @@ units::Volume GeneralModelExecutor::getVirtualVolume(const std::string & sourceI
 void GeneralModelExecutor::loadContainer(const std::string & sourceId, units::Volume initialVolume) {
     int machineSourceId = mapping->getMappedComponent(sourceId);
 
-    std::string message = "fill machine's container: " + std::to_string(machineSourceId) +
-                          " with " + std::to_string(initialVolume.to(units::ml)) + " ml of protocol's container: " + sourceId;
+    std::string message = "[USER_QUESTION]fill machine's container: " + std::to_string(machineSourceId) +
+                          " with " + std::to_string(initialVolume.to(units::ml)) + " ml of protocol's container: " + sourceId + ", click OK when ready.";
     userCom->sendUserMessage(addTimeStamp(message));
     userCom->getUserResponse();
 }

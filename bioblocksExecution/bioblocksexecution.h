@@ -28,10 +28,14 @@ public:
     virtual ~BioblocksExecution();
 
     void executeNewProtocol(const std::string & protocolJSONFile, const std::string & machineJSONFile, units::Time timeSlice);
+    void stopExecution();
 
 protected:
+    bool running;
     std::shared_ptr<PluginAbstractFactory> pluginFactory;
     std::shared_ptr<UserCommunicationInterface> userComm;
+    std::shared_ptr<ModelInterface> model;
+    BioBlocksProtocolExecutor* protocolExecutor;
 };
 
 #endif // BIOBLOCKSEXECUTION_H
