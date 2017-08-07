@@ -31,11 +31,11 @@ public:
     void stopExecution();
 
 protected:
-    bool running;
+    volatile bool running;
     std::shared_ptr<PluginAbstractFactory> pluginFactory;
     std::shared_ptr<UserCommunicationInterface> userComm;
     std::shared_ptr<ModelInterface> model;
-    BioBlocksProtocolExecutor* protocolExecutor;
+    std::shared_ptr<GeneralModelExecutor> actuatorsExecutor;
 };
 
 #endif // BIOBLOCKSEXECUTION_H
