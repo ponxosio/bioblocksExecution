@@ -12,10 +12,16 @@ GeneralModelExecutor::GeneralModelExecutor(
     this->userCom = userCom;
 
     timer = std::make_shared<QTime>();
+    mutex = new QMutex();
+    condition = new QWaitCondition();
+
+    aboutToQuit = false;
+    waiting = false;
 }
 
 GeneralModelExecutor::~GeneralModelExecutor() {
-
+    delete mutex;
+    delete condition;
 }
 
 void GeneralModelExecutor::applyLigth(const std::string & sourceId, units::Length wavelength, units::LuminousIntensity intensity) {
@@ -173,7 +179,10 @@ void GeneralModelExecutor::loadContainer(const std::string & sourceId, units::Vo
     std::string message = "[USER_QUESTION]fill machine's container: " + std::to_string(machineSourceId) +
                           " with " + std::to_string(initialVolume.to(units::ml)) + " ml of protocol's container: " + sourceId + ", click OK when ready.";
     userCom->sendUserMessage(addTimeStamp(message));
-    userCom->getUserResponse();
+
+    if(!aboutToQuit) {
+        userCom->getUserResponse();
+    }
 }
 
 void GeneralModelExecutor::startMeasureOD(const std::string & sourceId, units::Frequency measurementFrequency, units::Length wavelength) {
@@ -425,7 +434,11 @@ units::Time GeneralModelExecutor::timeStep() {
 
     units::Time time2wait = timeSlice - millisecondsPass;
     if (time2wait > 0*units::ms) {
-        QThread::msleep(time2wait.to(units::ms));
+        if(!aboutToQuit) {
+            waiting = true;
+            waitMs(time2wait.to(units::ms));
+            waiting = false;
+        }
 
         timer->restart();
         return timeSlice;
@@ -435,9 +448,24 @@ units::Time GeneralModelExecutor::timeStep() {
     }
 }
 
+void GeneralModelExecutor::finishExecution() {
+    aboutToQuit = true;
+    if (waiting) {
+        condition->wakeAll();
+    }
+}
+
 std::string GeneralModelExecutor::addTimeStamp(const std::string & str) {
     QDateTime now = QDateTime::currentDateTime();
     std::string timeStap = now.toString("dd hh:mm:ss").toStdString();
 
     return timeStap + " . " + str;
+}
+
+void GeneralModelExecutor::waitMs(unsigned long ms) {
+    CustomSleepMsThread sleepThread(mutex, condition, ms);
+    mutex->lock();
+    sleepThread.start();
+    sleepThread.wait();
+    mutex->unlock();
 }

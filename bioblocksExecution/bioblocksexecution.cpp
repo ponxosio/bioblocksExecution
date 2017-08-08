@@ -8,13 +8,11 @@ BioblocksExecution::BioblocksExecution(
     this->userComm = userComm;
     this->running = false;
     this->model = NULL;
-    this->protocolExecutor = NULL;
+    this->actuatorsExecutor = NULL;
 }
 
 BioblocksExecution::~BioblocksExecution() {
-    if (protocolExecutor != NULL) {
-        delete protocolExecutor;
-    }
+
 }
 
 void BioblocksExecution::executeNewProtocol(
@@ -38,13 +36,13 @@ void BioblocksExecution::executeNewProtocol(
     std::string erroMsg;
     if (mapping->findRelation(simulator, erroMsg)) {
 
-        std::shared_ptr<GeneralModelExecutor> actuatorsExecutor = std::make_shared<GeneralModelExecutor>(model, mapping, userComm);
+        actuatorsExecutor = std::make_shared<GeneralModelExecutor>(model, mapping, userComm);
 
         int mainLoopId = logicBlocks->getMainLoopId();
-        protocolExecutor = new BioBlocksProtocolExecutor(protocol, mainLoopId, actuatorsExecutor->getTimer());
+        BioBlocksProtocolExecutor protocolExecutor(protocol, mainLoopId, actuatorsExecutor->getTimer());
 
         running = true;
-        protocolExecutor->executeProtocol(actuatorsExecutor, 0);
+        protocolExecutor.executeProtocol(actuatorsExecutor, 0);
         running = false;
     } else {
         userComm->sendUserMessage(erroMsg);
@@ -53,7 +51,7 @@ void BioblocksExecution::executeNewProtocol(
 
 void BioblocksExecution::stopExecution() {
     if (running) {
-        //protocolExecutor->finishExecution();
+        actuatorsExecutor->finishExecution();
         model->stopAllOperations();
     }
 }

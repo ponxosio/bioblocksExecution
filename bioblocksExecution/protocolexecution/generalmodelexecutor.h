@@ -1,7 +1,8 @@
 #ifndef GENERALMODELEXECUTOR_H
 #define GENERALMODELEXECUTOR_H
 
-#include <QThread>
+#include <QMutex>
+#include <QWaitCondition>
 #include <QTime>
 
 #include <sstream>
@@ -16,6 +17,7 @@
 #include <utils/units.h>
 
 #include "bioblocksExecution/usercommunications/usercommunicationinterface.h"
+#include "bioblocksExecution/protocolexecution/customsleepmsthread.h"
 
 class GeneralModelExecutor : public ActuatorsExecutionInterface
 {
@@ -83,12 +85,20 @@ public:
     virtual void setTimeStep(units::Time time);
     virtual units::Time timeStep();
 
+    void finishExecution();
+
     inline std::shared_ptr<QTime> getTimer() const {
         return timer;
     }
 
 protected:
+    volatile bool aboutToQuit;
+    volatile bool waiting;
+
     bool flowsNeedUpdate;
+
+    QMutex* mutex;
+    QWaitCondition* condition;
 
     std::shared_ptr<QTime> timer;
     units::Time timeSlice;
@@ -98,6 +108,8 @@ protected:
     std::shared_ptr<UserCommunicationInterface> userCom;
 
     std::string addTimeStamp(const std::string & str);
+
+    void waitMs(unsigned long ms);
 };
 
 #endif // GENERALMODELEXECUTOR_H
