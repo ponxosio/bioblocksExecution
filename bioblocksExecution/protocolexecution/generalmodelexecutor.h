@@ -103,6 +103,8 @@ protected:
     std::shared_ptr<QTime> timer;
     units::Time timeSlice;
 
+    std::vector<int> containersUsedInProtocol;
+
     std::shared_ptr<ModelInterface> model;
     std::shared_ptr<MappingInterface> mapping;
     std::shared_ptr<UserCommunicationInterface> userCom;

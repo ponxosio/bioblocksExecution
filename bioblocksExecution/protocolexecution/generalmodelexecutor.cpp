@@ -3,7 +3,8 @@
 GeneralModelExecutor::GeneralModelExecutor(
         std::shared_ptr<ModelInterface> model,
         std::shared_ptr<MappingInterface> mapping,
-        std::shared_ptr<UserCommunicationInterface> userCom)
+        std::shared_ptr<UserCommunicationInterface> userCom) :
+    containersUsedInProtocol(mapping->getAllContainersUseInProtocol())
 {
     this->flowsNeedUpdate = false;
 
@@ -426,7 +427,7 @@ void GeneralModelExecutor::setTimeStep(units::Time time) {
 
 units::Time GeneralModelExecutor::timeStep() {
     if (flowsNeedUpdate) {
-        model->processFlows();
+        model->processFlows(containersUsedInProtocol);
         flowsNeedUpdate = false;
     }
 
