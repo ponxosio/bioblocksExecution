@@ -30,6 +30,9 @@ void GeneralModelExecutor::applyLigth(const std::string & sourceId, units::Lengt
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "apply ligth to" << sourceId << " with: wavelength: " << wavelength << " and intensity: " << intensity;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -41,6 +44,9 @@ void GeneralModelExecutor::stopApplyLigth(const std::string & sourceId) {
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stop apply ligth to " << sourceId;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -52,6 +58,9 @@ void GeneralModelExecutor::applyTemperature(const std::string & sourceId, units:
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "apply temperature to " << sourceId << " with " << temperature;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -63,6 +72,9 @@ void GeneralModelExecutor::stopApplyTemperature(const std::string & sourceId) {
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stop apply temperature to " << sourceId;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -74,6 +86,9 @@ void GeneralModelExecutor::stir(const std::string & idSource, units::Frequency i
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stir " << idSource << " with " << intensity;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -85,6 +100,9 @@ void GeneralModelExecutor::stopStir(const std::string & idSource) {
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stop stir of " << idSource;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -96,6 +114,9 @@ void GeneralModelExecutor::centrifugate(const std::string & idSource, units::Fre
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "centrifugate " << idSource << " with " << intensity;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -107,6 +128,9 @@ void GeneralModelExecutor::stopCentrifugate(const std::string & idSource) {
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stop centrifugation of " << idSource;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -118,6 +142,9 @@ void GeneralModelExecutor::shake(const std::string & idSource, units::Frequency 
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "shake " << idSource << " with " << intensity;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -129,6 +156,9 @@ void GeneralModelExecutor::stopShake(const std::string & idSource) {
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stop shake of " << idSource;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -140,6 +170,9 @@ void GeneralModelExecutor::startElectrophoresis(const std::string & idSource, un
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "start electrophoresis to " << idSource << " with " << fieldStrenght;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -151,6 +184,9 @@ std::shared_ptr<ElectrophoresisResult> GeneralModelExecutor::stopElectrophoresis
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stop electrophoresis of " << idSource;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -168,6 +204,9 @@ units::Volume GeneralModelExecutor::getVirtualVolume(const std::string & sourceI
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "get virtual volume of " << sourceId;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -177,9 +216,14 @@ units::Volume GeneralModelExecutor::getVirtualVolume(const std::string & sourceI
 void GeneralModelExecutor::loadContainer(const std::string & sourceId, units::Volume initialVolume) {
     int machineSourceId = mapping->getMappedComponent(sourceId);
 
-    std::string message = "[USER_QUESTION]fill machine's container: " + std::to_string(machineSourceId) +
-                          " with " + std::to_string(initialVolume.to(units::ml)) + " ml of protocol's container: " + sourceId + ", click OK when ready.";
-    userCom->sendUserMessage(addTimeStamp(message));
+    std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
+    message << "[USER_QUESTION]fill machine's container: " << std::to_string(machineSourceId) << " with " << initialVolume.to(units::ml)
+            << " ml of protocol's container: " << sourceId << ", click OK when ready.";
+
+    userCom->sendUserMessage(addTimeStamp(message.str()));
 
     if(!aboutToQuit) {
         userCom->getUserResponse();
@@ -191,6 +235,9 @@ void GeneralModelExecutor::startMeasureOD(const std::string & sourceId, units::F
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "start measuring OD from " << sourceId << " with: measurement frequency: " << measurementFrequency << " and waveLength: " << wavelength;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -204,6 +251,9 @@ double GeneralModelExecutor::getMeasureOD(const std::string & sourceId) {
     std::shared_ptr<MultiUnitsWrapper> value = componentPtr->doOperation(Function::measure_od, 0);
     if (value != NULL) {
         std::stringstream message;
+        message << std::fixed;
+        message << std::setprecision(2);
+
         message << "measured OD of " << sourceId << " is " << value->getNoUnits();
         userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -219,6 +269,9 @@ void GeneralModelExecutor::startMeasureTemperature(const std::string & sourceId,
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "start measuring Temperature from " << sourceId << " with measurement frequency: " << measurementFrequency;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -232,6 +285,9 @@ units::Temperature GeneralModelExecutor::getMeasureTemperature(const std::string
     std::shared_ptr<MultiUnitsWrapper> value = componentPtr->doOperation(Function::measure_temperature, 0);
     if (value != NULL) {
         std::stringstream message;
+        message << std::fixed;
+        message << std::setprecision(2);
+
         message << "measures temperature of " << sourceId << " is " << value->getTemperature();
         userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -247,6 +303,9 @@ void GeneralModelExecutor::startMeasureLuminiscense(const std::string & sourceId
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "start measuring luminiscence of " << sourceId << " with measurement frequency: " << measurementFrequency;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -260,6 +319,9 @@ units::LuminousIntensity GeneralModelExecutor::getMeasureLuminiscense(const std:
     std::shared_ptr<MultiUnitsWrapper> value = componentPtr->doOperation(Function::measure_luminiscence, 0);
     if (value != NULL) {
         std::stringstream message;
+        message << std::fixed;
+        message << std::setprecision(2);
+
         message << "measured luminiscence of " << sourceId << " is " << value->getLuminousIntensity();
         userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -275,6 +337,9 @@ void GeneralModelExecutor::startMeasureVolume(const std::string & sourceId, unit
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "start measuring volume of " << sourceId << " with measurement frequency: " << measurementFrequency;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -288,6 +353,9 @@ units::Volume GeneralModelExecutor::getMeasureVolume(const std::string & sourceI
     std::shared_ptr<MultiUnitsWrapper> value = componentPtr->doOperation(Function::measure_volume, 0);
     if (value != NULL) {
         std::stringstream message;
+        message << std::fixed;
+        message << std::setprecision(2);
+
         message << "measured volume of " << sourceId << " is " << value->getVolume();
         userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -308,6 +376,9 @@ void GeneralModelExecutor::startMeasureFluorescence(
     std::shared_ptr<ComponentInterface> componentPtr = model->getComponent(machineSourceId);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "start measuring fluorescence from " << sourceId << " with: measurement frequency: " << measurementFrequency;
     message << ", excitation: " << excitation << " and emission: " << emission;
     userCom->sendUserMessage(addTimeStamp(message.str()));
@@ -322,6 +393,9 @@ units::LuminousIntensity GeneralModelExecutor::getMeasureFluorescence(const std:
     std::shared_ptr<MultiUnitsWrapper> value = componentPtr->doOperation(Function::measure_fluorescence, 0);
     if (value != NULL) {
         std::stringstream message;
+        message << std::fixed;
+        message << std::setprecision(2);
+
         message << "measured fluorescence from " << sourceId << " is " << value->getLuminousIntensity();
         userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -337,6 +411,9 @@ void GeneralModelExecutor::setContinuosFlow(const std::string & idSource, const 
     int machineTargetId = mapping->getMappedComponent(idTarget);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "set continuous flow from " << idSource << " to " << idTarget << " at " << rate;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -349,6 +426,9 @@ void GeneralModelExecutor::stopContinuosFlow(const std::string & idSource, const
     int machineTargetId = mapping->getMappedComponent(idTarget);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stop continuous flow from " << idSource << " to " << idTarget;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -361,6 +441,9 @@ units::Time GeneralModelExecutor::transfer(const std::string & idSource, const s
     int machineTargetId = mapping->getMappedComponent(idTarget);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "transfer " << volume << " from " << idSource << " to " << idTarget;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -373,6 +456,9 @@ void GeneralModelExecutor::stopTransfer(const std::string & idSource, const std:
     int machineTargetId = mapping->getMappedComponent(idTarget);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stop transfer from " << idSource << " to " << idTarget;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -392,6 +478,9 @@ units::Time GeneralModelExecutor::mix(
     int machineTargetId = mapping->getMappedComponent(idTarget);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "mix " << volume1 << " form " << idSource1 << " and " << volume2 << " from " << idSource2 << " into " << idTarget;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -410,6 +499,9 @@ void GeneralModelExecutor::stopMix(
     int machineTargetId = mapping->getMappedComponent(idTarget);
 
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "stop mixing " << idSource1 << " and " << idSource2 << " into " << idTarget;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
@@ -419,6 +511,9 @@ void GeneralModelExecutor::stopMix(
 
 void GeneralModelExecutor::setTimeStep(units::Time time) {
     std::stringstream message;
+    message << std::fixed;
+    message << std::setprecision(2);
+
     message << "setting time step to " << time;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 

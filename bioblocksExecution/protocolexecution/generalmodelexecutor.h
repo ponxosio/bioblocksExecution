@@ -6,6 +6,7 @@
 #include <QTime>
 
 #include <sstream>
+#include <iomanip>
 
 #include <commonmodel/mappinginterface/mappinginterface.h>
 
