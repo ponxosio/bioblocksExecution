@@ -2,7 +2,6 @@
 
 ConsoleUserCommunications::ConsoleUserCommunications()
 {
-
 }
 
 ConsoleUserCommunications::~ConsoleUserCommunications()
