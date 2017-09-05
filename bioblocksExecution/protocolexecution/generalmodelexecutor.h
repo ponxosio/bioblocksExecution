@@ -110,7 +110,7 @@ protected:
     std::shared_ptr<MappingInterface> mapping;
     std::shared_ptr<UserCommunicationInterface> userCom;
 
-    std::string addTimeStamp(const std::string & str);
+    virtual std::string addTimeStamp(const std::string & str);
 
     void waitMs(unsigned long ms);
 };

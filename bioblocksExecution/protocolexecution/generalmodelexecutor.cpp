@@ -33,7 +33,7 @@ void GeneralModelExecutor::applyLigth(const std::string & sourceId, units::Lengt
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "apply ligth to" << sourceId << " with: wavelength: " << wavelength << " and intensity: " << intensity;
+    message << "apply ligth to" << sourceId << " with: wavelength: " << wavelength.to(units::nm) << " nm and intensity: " << intensity.to(units::cd) << " cd";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::apply_light, 2, intensity, wavelength);
@@ -61,7 +61,7 @@ void GeneralModelExecutor::applyTemperature(const std::string & sourceId, units:
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "apply temperature to " << sourceId << " with " << temperature;
+    message << "apply temperature to " << sourceId << " with " << temperature.to(units::C) << " ºC";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::heat, 1, temperature);
@@ -89,7 +89,7 @@ void GeneralModelExecutor::stir(const std::string & idSource, units::Frequency i
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "stir " << idSource << " with " << intensity;
+    message << "stir " << idSource << " with " << intensity.to(units::Hz) << " Hz";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::stir, 1, intensity);
@@ -117,7 +117,7 @@ void GeneralModelExecutor::centrifugate(const std::string & idSource, units::Fre
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "centrifugate " << idSource << " with " << intensity;
+    message << "centrifugate " << idSource << " with " << intensity.to(units::Hz) << " Hz";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::centrifugate, 1, intensity);
@@ -145,7 +145,7 @@ void GeneralModelExecutor::shake(const std::string & idSource, units::Frequency 
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "shake " << idSource << " with " << intensity;
+    message << "shake " << idSource << " with " << intensity.to(units::Hz) << " Hz";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::shake, 1, intensity);
@@ -173,7 +173,7 @@ void GeneralModelExecutor::startElectrophoresis(const std::string & idSource, un
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "start electrophoresis to " << idSource << " with " << fieldStrenght;
+    message << "start electrophoresis to " << idSource << " with " << fieldStrenght.to(units::V / units::cm) << " V/cm";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::electrophoresis, 1, fieldStrenght);
@@ -238,7 +238,9 @@ void GeneralModelExecutor::startMeasureOD(const std::string & sourceId, units::F
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "start measuring OD from " << sourceId << " with: measurement frequency: " << measurementFrequency << " and waveLength: " << wavelength;
+    message << "start measuring OD from " << sourceId << " with: measurement frequency: " << measurementFrequency.to(units::Hz)
+            << " Hz and waveLength: " << wavelength.to(units::nm) << " nm";
+
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::measure_od, 2, measurementFrequency, wavelength);
@@ -272,7 +274,7 @@ void GeneralModelExecutor::startMeasureTemperature(const std::string & sourceId,
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "start measuring Temperature from " << sourceId << " with measurement frequency: " << measurementFrequency;
+    message << "start measuring Temperature from " << sourceId << " with measurement frequency: " << measurementFrequency.to(units::Hz) << " Hz";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::measure_temperature, 1, measurementFrequency);
@@ -306,7 +308,7 @@ void GeneralModelExecutor::startMeasureLuminiscense(const std::string & sourceId
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "start measuring luminiscence of " << sourceId << " with measurement frequency: " << measurementFrequency;
+    message << "start measuring luminiscence of " << sourceId << " with measurement frequency: " << measurementFrequency.to(units::Hz) << " Hz";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::measure_luminiscence, 1, measurementFrequency);
@@ -340,7 +342,7 @@ void GeneralModelExecutor::startMeasureVolume(const std::string & sourceId, unit
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "start measuring volume of " << sourceId << " with measurement frequency: " << measurementFrequency;
+    message << "start measuring volume of " << sourceId << " with measurement frequency: " << measurementFrequency.to(units::Hz) << " Hz";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::measure_volume, 1, measurementFrequency);
@@ -379,8 +381,8 @@ void GeneralModelExecutor::startMeasureFluorescence(
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "start measuring fluorescence from " << sourceId << " with: measurement frequency: " << measurementFrequency;
-    message << ", excitation: " << excitation << " and emission: " << emission;
+    message << "start measuring fluorescence from " << sourceId << " with: measurement frequency: " << measurementFrequency.to(units::Hz) << " Hz";
+    message << ", excitation: " << excitation.to(units::nm) << " nm and emission: " << emission.to(units::nm) << " nm";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     componentPtr->doOperation(Function::measure_fluorescence, 3, measurementFrequency, excitation, emission);
@@ -414,7 +416,7 @@ void GeneralModelExecutor::setContinuosFlow(const std::string & idSource, const 
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "set continuous flow from " << idSource << " to " << idTarget << " at " << rate;
+    message << "set continuous flow from " << idSource << " to " << idTarget << " at " << rate.to(units::ml/units::hr) << " ml/h";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     flowsNeedUpdate = true;
@@ -444,7 +446,7 @@ units::Time GeneralModelExecutor::transfer(const std::string & idSource, const s
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "transfer " << volume << " from " << idSource << " to " << idTarget;
+    message << "transfer " << volume.to(units::ml) << " ml from " << idSource << " to " << idTarget;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     flowsNeedUpdate = true;
@@ -481,7 +483,7 @@ units::Time GeneralModelExecutor::mix(
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "mix " << volume1 << " form " << idSource1 << " and " << volume2 << " from " << idSource2 << " into " << idTarget;
+    message << "mix " << volume1.to(units::ml) << "ml form " << idSource1 << " and " << volume2.to(units::ml) << " ml from " << idSource2 << " into " << idTarget;
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     flowsNeedUpdate = true;
@@ -514,7 +516,7 @@ void GeneralModelExecutor::setTimeStep(units::Time time) {
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "setting time step to " << time;
+    message << "setting time step to " << time.to(units::s) << " s";
     userCom->sendUserMessage(addTimeStamp(message.str()));
 
     this->timeSlice = time;
@@ -553,8 +555,8 @@ void GeneralModelExecutor::finishExecution() {
 
 std::string GeneralModelExecutor::addTimeStamp(const std::string & str) {
     QDateTime now = QDateTime::currentDateTime();
-    std::string timeStap = now.toString("dd hh:mm:ss").toStdString();
 
+    std::string timeStap = now.toString("dd hh:mm:ss").toStdString();
     return timeStap + " . " + str;
 }
 

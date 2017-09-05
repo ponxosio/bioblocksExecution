@@ -11,10 +11,13 @@
 
 #include <blocklyFluidicMachineTranslator/blocklyfluidicmachinetranslator.h>
 
+#include <utils/timestampsimulator.h>
+
 #include "bioblocksExecution/bioblocksSimulation/bioblocksrunningsimulator.h"
 
 #include "bioblocksExecution/protocolexecution/bioblocksprotocolexecutor.h"
 #include "bioblocksExecution/protocolexecution/generalmodelexecutor.h"
+#include "bioblocksExecution/protocolexecution/generalmodeltimesimulatedexecution.h"
 
 #include "bioblocksExecution/usercommunications/usercommunicationinterface.h"
 
@@ -28,6 +31,12 @@ public:
     virtual ~BioblocksExecution();
 
     void executeNewProtocol(const std::string & protocolJSONFile, const std::string & machineJSONFile, units::Time timeSlice);
+
+    void executeNewProtocolSimulateTime(const std::string & protocolJSONFile,
+                                        const std::string & machineJSONFile,
+                                        units::Time timeSlice,
+                                        std::shared_ptr<TimeStampSimulator> timestampManager);
+
     void stopExecution();
 
 protected:

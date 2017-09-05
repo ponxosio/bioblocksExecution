@@ -40,7 +40,8 @@ HEADERS += \
     bioblocksExecution/usercommunications/usercommunicationinterface.h \
     bioblocksExecution/protocolexecution/bioblocksprotocolexecutor.h \
     bioblocksExecution/usercommunications/consoleusercommunications.h \
-    bioblocksExecution/protocolexecution/customsleepmsthread.h
+    bioblocksExecution/protocolexecution/customsleepmsthread.h \
+    bioblocksExecution/protocolexecution/generalmodeltimesimulatedexecution.h
 
 SOURCES += \
     bioblocksExecution/bioblocksexecution.cpp \
@@ -48,7 +49,8 @@ SOURCES += \
     bioblocksExecution/protocolexecution/generalmodelexecutor.cpp \
     bioblocksExecution/protocolexecution/bioblocksprotocolexecutor.cpp \
     bioblocksExecution/usercommunications/consoleusercommunications.cpp \
-    bioblocksExecution/protocolexecution/customsleepmsthread.cpp
+    bioblocksExecution/protocolexecution/customsleepmsthread.cpp \
+    bioblocksExecution/protocolexecution/generalmodeltimesimulatedexecution.cpp
 
 debug {
     QMAKE_POST_LINK=X:\bioblocksExecution\bioblocksExecution\setDLL.bat $$shell_path($$OUT_PWD/debug) debug
