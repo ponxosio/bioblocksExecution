@@ -16,6 +16,7 @@ public:
     GeneralModelTimeSimulatedExecution(std::shared_ptr<ModelInterface> model,
                                        std::shared_ptr<MappingInterface> mapping,
                                        std::shared_ptr<UserCommunicationInterface> userCom,
+                                       const std::unordered_map<int, std::string> & containerAlias,
                                        std::shared_ptr<TimeStampSimulator> timestampManager);
     virtual ~GeneralModelTimeSimulatedExecution();
 

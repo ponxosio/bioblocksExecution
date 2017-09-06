@@ -33,10 +33,14 @@ void BioblocksExecution::executeNewProtocol(
 
     std::shared_ptr<BioBlocksRunningSimulator> simulator = std::make_shared<BioBlocksRunningSimulator>(protocol, logicBlocks);
 
+    userComm->sendUserMessage("starting mapping...");
+
     std::string erroMsg;
     if (mapping->findRelation(simulator, erroMsg)) {
+        userComm->sendUserMessage("mapping done!");
 
-        actuatorsExecutor = std::make_shared<GeneralModelExecutor>(model, mapping, userComm);
+        std::unordered_map<int, std::string> aliasMap = Utils::reverseMap<std::string,int>(machineLoader.getVariableIdMap());
+        actuatorsExecutor = std::make_shared<GeneralModelExecutor>(model, mapping, userComm, aliasMap);
 
         int mainLoopId = logicBlocks->getMainLoopId();
         BioBlocksProtocolExecutor protocolExecutor(protocol, mainLoopId, actuatorsExecutor->getTimer());
@@ -68,10 +72,14 @@ void BioblocksExecution::executeNewProtocolSimulateTime(
 
     std::shared_ptr<BioBlocksRunningSimulator> simulator = std::make_shared<BioBlocksRunningSimulator>(protocol, logicBlocks);
 
+    userComm->sendUserMessage("starting mapping...");
+
     std::string erroMsg;
     if (mapping->findRelation(simulator, erroMsg)) {
+        userComm->sendUserMessage("mapping done!");
 
-        actuatorsExecutor = std::make_shared<GeneralModelTimeSimulatedExecution>(model, mapping, userComm, timestampManager);
+        std::unordered_map<int, std::string> aliasMap = Utils::reverseMap<std::string,int>(machineLoader.getVariableIdMap());
+        actuatorsExecutor = std::make_shared<GeneralModelTimeSimulatedExecution>(model, mapping, userComm, aliasMap, timestampManager);
 
         int mainLoopId = logicBlocks->getMainLoopId();
         BioBlocksProtocolExecutor protocolExecutor(protocol, mainLoopId, actuatorsExecutor->getTimer());

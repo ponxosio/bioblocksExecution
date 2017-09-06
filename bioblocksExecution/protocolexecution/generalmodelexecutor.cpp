@@ -3,8 +3,9 @@
 GeneralModelExecutor::GeneralModelExecutor(
         std::shared_ptr<ModelInterface> model,
         std::shared_ptr<MappingInterface> mapping,
-        std::shared_ptr<UserCommunicationInterface> userCom) :
-    containersUsedInProtocol(mapping->getAllContainersUseInProtocol())
+        std::shared_ptr<UserCommunicationInterface> userCom,
+        const std::unordered_map<int, std::string> & containerAlias) :
+    containersUsedInProtocol(mapping->getAllContainersUseInProtocol()), cAlias(containerAlias)
 {
     this->flowsNeedUpdate = false;
 
@@ -220,7 +221,7 @@ void GeneralModelExecutor::loadContainer(const std::string & sourceId, units::Vo
     message << std::fixed;
     message << std::setprecision(2);
 
-    message << "[USER_QUESTION]fill machine's container: " << std::to_string(machineSourceId) << " with " << initialVolume.to(units::ml)
+    message << "[USER_QUESTION]fill machine's container: " << cAlias[machineSourceId] << " with " << initialVolume.to(units::ml)
             << " ml of protocol's container: " << sourceId << ", click OK when ready.";
 
     userCom->sendUserMessage(addTimeStamp(message.str()));

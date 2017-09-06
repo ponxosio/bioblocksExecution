@@ -25,7 +25,8 @@ class GeneralModelExecutor : public ActuatorsExecutionInterface
 public:
     GeneralModelExecutor(std::shared_ptr<ModelInterface> model,
                          std::shared_ptr<MappingInterface> mapping,
-                         std::shared_ptr<UserCommunicationInterface> userCom);
+                         std::shared_ptr<UserCommunicationInterface> userCom,
+                         const std::unordered_map<int, std::string> & containerAlias);
     virtual ~GeneralModelExecutor();
 
     virtual void applyLigth(const std::string & sourceId, units::Length wavelength, units::LuminousIntensity intensity);
@@ -105,6 +106,7 @@ protected:
     units::Time timeSlice;
 
     std::vector<int> containersUsedInProtocol;
+    std::unordered_map<int, std::string> cAlias;
 
     std::shared_ptr<ModelInterface> model;
     std::shared_ptr<MappingInterface> mapping;
